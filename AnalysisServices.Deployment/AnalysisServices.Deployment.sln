@@ -1,20 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalysisServices.Deployment", "AnalysisServices.Deployment\AnalysisServices.Deployment.csproj", "{78A1D635-3CD2-41F2-813E-6E0AB65C9366}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalysisServices.Deployment.SQL2014", "AnalysisServices.Deployment\AnalysisServices.Deployment.SQL2014.csproj", "{78A1D635-3CD2-41F2-813E-6E0AB65C9366}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://jppp-work.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = AnalysisServices.Deployment\\AnalysisServices.Deployment.csproj
-		SccProjectName1 = AnalysisServices.Deployment
-		SccLocalPath1 = AnalysisServices.Deployment
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
