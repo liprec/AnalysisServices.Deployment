@@ -16,7 +16,7 @@ namespace AnalysisServices.Deployment
     class Program {
         private static TextWriter traceWriter = null;
 
-        static void Main(string[] args) {
+        static unsafe void Main(string[] args) {
             CmdOptions cmdLineOptions = new CmdOptions(args);
             if (cmdLineOptions.ShowHelp) {
                 ShowHelp(cmdLineOptions.ErrorMsg);
@@ -45,7 +45,7 @@ namespace AnalysisServices.Deployment
             SecurityInformation secInformation = new SecurityInformation();
             DataSourceSecurityInformation dsSecInformation = new DataSourceSecurityInformation();
             dsSecInformation.ID = cmdLineOptions.DataSourceID;
-            dsSecInformation.ImpersonationPassword = cmdLineOptions.Password;
+            dsSecInformation.ImpersonationPassword = cmdLineOptions.Password.ToString();
             if (string.IsNullOrEmpty(cmdLineOptions.UserName)) {
                 dsSecInformation.User = cmdLineOptions.UserName;
             }
@@ -134,7 +134,7 @@ namespace AnalysisServices.Deployment
                 {
                     DataSourceSecurityInformation dsSecInformation = new DataSourceSecurityInformation();
                     dsSecInformation.ID = cmdLineOptions.DataSourceID;
-                    dsSecInformation.ImpersonationPassword = cmdLineOptions.Password;
+                    dsSecInformation.ImpersonationPassword = cmdLineOptions.Password.ToString();
 
                     if (string.IsNullOrEmpty(cmdLineOptions.UserName)) {
                         dsSecInformation.User = cmdLineOptions.UserName;
@@ -199,7 +199,9 @@ namespace AnalysisServices.Deployment
             Console.WriteLine(string.Format(outline, "/s[:logfile]", "Log output to file"));
             Console.WriteLine();
             Console.WriteLine(string.Format(outline, "/?, /h", "This help"));
+#if DEBUG
             Console.ReadLine();
+#endif
         }
 
         private static void ListDataSources(CmdOptions cmdLineOptions) {

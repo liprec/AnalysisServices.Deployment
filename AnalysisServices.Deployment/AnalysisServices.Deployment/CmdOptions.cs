@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,12 +28,12 @@ namespace AnalysisServices.Deployment {
 
         public string DataSourceID = string.Empty;
         public string UserName = string.Empty;
-        public string Password = string.Empty;
         public string SaveFile = string.Empty;
-        
+        public SecureString Password = new SecureString();
+
         public string LogFile = string.Empty;
 
-        public CmdOptions(string[] args) {
+        public unsafe CmdOptions(string[] args) {
             string ModelDirectory = Directory.GetCurrentDirectory();
 
             if (args.Length == 0) { ShowHelp = true; }
@@ -70,18 +71,20 @@ namespace AnalysisServices.Deployment {
                 if (arg.StartsWith("/u:", StringComparison.OrdinalIgnoreCase))
                     { UserName = arg.Substring(3); }
                 if (arg.StartsWith("/p:", StringComparison.OrdinalIgnoreCase))
-                    { Password = arg.Substring(3); }
+                {
+                    Password = ParsePassword(arg.Substring(3));
+                }
                 if (arg.StartsWith("/f:", StringComparison.OrdinalIgnoreCase))
                     { SaveFile = arg.Substring(3); }
 
                 if (arg.StartsWith("/s:", StringComparison.OrdinalIgnoreCase))
                     { LogFile = arg.Substring(3); }
             }
-
+            
             if ((DeployMode) && (!string.IsNullOrEmpty(ModelFile)))
                 { IsDeploy = true; }
             if ((ImpersonateMode) && (!string.IsNullOrEmpty(DataSourceID)) 
-                    && (!string.IsNullOrEmpty(Password)) && (!string.IsNullOrEmpty(SaveFile)))
+                    && (!string.IsNullOrEmpty(Password.ToString())) && (!string.IsNullOrEmpty(SaveFile)))
                 { IsImpersonate = true; }
             if ((ListMode) && (!string.IsNullOrEmpty(ModelFile)))
                 { IsListMode = true; }
@@ -93,6 +96,14 @@ namespace AnalysisServices.Deployment {
 
             if ((!IsDeploy) && (!IsImpersonate) && (!IsListMode))
                 { ShowHelp = true; }
+        }
+
+        private unsafe SecureString ParsePassword(string pwd)
+        {
+            fixed (char* pChars = pwd)
+            {
+                return new SecureString(pChars, pwd.Length);
+            }
         }
 
         private void ValidateFileNames() {
