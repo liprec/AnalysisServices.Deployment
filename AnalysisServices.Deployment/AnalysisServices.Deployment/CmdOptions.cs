@@ -26,6 +26,8 @@ namespace AnalysisServices.Deployment {
         public bool ImpersonateMode;
         public bool ListMode;
 
+        public bool IsPasswordSet = false;
+
         public string DataSourceID = string.Empty;
         public string UserName = string.Empty;
         public string SaveFile = string.Empty;
@@ -73,6 +75,7 @@ namespace AnalysisServices.Deployment {
                 if (arg.StartsWith("/p:", StringComparison.OrdinalIgnoreCase))
                 {
                     Password = ParsePassword(arg.Substring(3));
+                    IsPasswordSet = true;
                 }
                 if (arg.StartsWith("/f:", StringComparison.OrdinalIgnoreCase))
                     { SaveFile = arg.Substring(3); }
@@ -84,7 +87,7 @@ namespace AnalysisServices.Deployment {
             if ((DeployMode) && (!string.IsNullOrEmpty(ModelFile)))
                 { IsDeploy = true; }
             if ((ImpersonateMode) && (!string.IsNullOrEmpty(DataSourceID)) 
-                    && (!string.IsNullOrEmpty(Password.ToString())) && (!string.IsNullOrEmpty(SaveFile)))
+                    && (!IsPasswordSet) && (!string.IsNullOrEmpty(SaveFile)))
                 { IsImpersonate = true; }
             if ((ListMode) && (!string.IsNullOrEmpty(ModelFile)))
                 { IsListMode = true; }
@@ -150,6 +153,14 @@ namespace AnalysisServices.Deployment {
             } else {
                 AssemblyFile = Path.Combine(ModelDirectory, AssemblyFile);
             }
+        }
+
+        public void Dispose()
+        {
+            // Password SecureString disposal
+            Password.Dispose();
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
         }
     }
 }

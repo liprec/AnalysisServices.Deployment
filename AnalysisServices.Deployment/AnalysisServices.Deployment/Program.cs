@@ -45,7 +45,7 @@ namespace AnalysisServices.Deployment
             SecurityInformation secInformation = new SecurityInformation();
             DataSourceSecurityInformation dsSecInformation = new DataSourceSecurityInformation();
             dsSecInformation.ID = cmdLineOptions.DataSourceID;
-            dsSecInformation.ImpersonationPassword = cmdLineOptions.Password.ToString();
+            dsSecInformation.ImpersonationPassword = new System.Net.NetworkCredential(string.Empty, cmdLineOptions.Password).Password;
             if (string.IsNullOrEmpty(cmdLineOptions.UserName)) {
                 dsSecInformation.User = cmdLineOptions.UserName;
             }
@@ -134,7 +134,7 @@ namespace AnalysisServices.Deployment
                 {
                     DataSourceSecurityInformation dsSecInformation = new DataSourceSecurityInformation();
                     dsSecInformation.ID = cmdLineOptions.DataSourceID;
-                    dsSecInformation.ImpersonationPassword = cmdLineOptions.Password.ToString();
+                    dsSecInformation.ImpersonationPassword = new System.Net.NetworkCredential(string.Empty, cmdLineOptions.Password).Password;
 
                     if (string.IsNullOrEmpty(cmdLineOptions.UserName)) {
                         dsSecInformation.User = cmdLineOptions.UserName;
@@ -155,6 +155,9 @@ namespace AnalysisServices.Deployment
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.InnerException);
                 Console.WriteLine(ex.StackTrace);
+            }
+            finally {
+                cmdLineOptions.Dispose();
             }
         }
 
