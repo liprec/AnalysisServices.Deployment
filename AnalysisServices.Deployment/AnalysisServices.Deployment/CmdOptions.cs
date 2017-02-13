@@ -62,7 +62,7 @@ namespace AnalysisServices.Deployment {
                     ConfigFile = arg.Substring(3);
                 }
                 if (arg.StartsWith("/sc:", StringComparison.OrdinalIgnoreCase)) {
-                    SecurityFile = arg.Substring(3);
+                    SecurityFile = arg.Substring(4);
                 }
                 if (arg.StartsWith("/a:", StringComparison.OrdinalIgnoreCase)) {
                     AssemblyFile = arg.Substring(3);
@@ -87,7 +87,7 @@ namespace AnalysisServices.Deployment {
             if ((DeployMode) && (!string.IsNullOrEmpty(ModelFile)))
                 { IsDeploy = true; }
             if ((ImpersonateMode) && (!string.IsNullOrEmpty(DataSourceID)) 
-                    && (!IsPasswordSet) && (!string.IsNullOrEmpty(SaveFile)))
+                    && (IsPasswordSet) && (!string.IsNullOrEmpty(SaveFile)))
                 { IsImpersonate = true; }
             if ((ListMode) && (!string.IsNullOrEmpty(ModelFile)))
                 { IsListMode = true; }
